@@ -3,15 +3,17 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const addUser = require("./Routes/addUser");
+const routes = require("./Routes/routes");
 const PORT = process.env.PORT || 5001;
 const MONGO_URI = process.env.MONGO_URI;
 
 app.use(bodyParser.json());
-app.use("/api", addUser);
+app.use("/api", routes);
 
 mongoose.connect(MONGO_URI);
 const db = mongoose.connection;
+
+
 
 db.on("error", (err) => {
   console.log(err);
