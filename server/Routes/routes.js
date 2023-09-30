@@ -7,21 +7,30 @@ const bycrypt = require("bcrypt");
 router.post("/register", async (req, res) => {
   const { name, email, password, company, solutionsPurchased } = req.body;
 
-  const hashedPass = await bycrypt.hash(password, parseInt(SALT));
+  const query = User.where({ email });
+  const user = await User.findOne(query);
 
-  const newUser = new User({
-    name,
-    email,
-    password: hashedPass,
-    company,
-    solutionsPurchased,
-  });
+  if (!user) {
+    const hashedPass = await bycrypt.hash(password, parseInt(SALT));
 
-  try {
-    const userData = await newUser.save();
-    res.status(200).json(userData);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
+    const newUser = new User({
+      name,
+      email,
+      password: hashedPass,
+      company,
+      solutionsPurchased,
+    });
+
+    try {
+      const userData = await newUser.save();
+      res.status(200).json(userData);
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  } else {
+    res
+      .status(400)
+      .json({ message: "This user is already registered with that email" });
   }
 });
 
@@ -30,7 +39,7 @@ router.post("/login", async (req, res) => {
 
   const query = User.where({ email });
   const user = await User.findOne(query);
-  
+
   if (user) {
     const hash = user.password;
     const auth = await bycrypt.compare(password, hash);
