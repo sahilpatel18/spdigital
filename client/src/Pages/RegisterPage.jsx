@@ -69,7 +69,7 @@ const RegisterPage = () => {
               {/* email input */}
               <div>
                 <label
-                  htmlFor="name"
+                  htmlFor="email"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
                   Email
