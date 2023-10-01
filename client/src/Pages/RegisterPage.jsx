@@ -12,9 +12,6 @@ const RegisterPage = () => {
       .matches(/[a-zA-Z]/, "Password can only contain Latin letters."),
   });
 
-  //handle submit should POST the form information to the server
-  // if we get a res.error we have to JSON.stringify the error message and tell the user to retry the user login
-
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -130,7 +127,6 @@ const RegisterPage = () => {
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     onChange={handleChange}
                   />
-
                   <ErrorMessage
                     name="company"
                     component="div"
@@ -149,106 +145,6 @@ const RegisterPage = () => {
             </Form>
           )}
         </Formik>
-        {/* <form className="space-y-6" method="POST">
-          <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium leading-6 text-gray-900"
-            >
-              Name
-            </label>
-            <div className="mt-2">
-              <input
-                id="name"
-                name="name"
-                required
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                onChange={(e) =>
-                  setUserFormData({ ...userFormData, name: e.target.value })
-                }
-              />
-            </div>
-          </div>
-
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium leading-6 text-gray-900"
-            >
-              Email address
-            </label>
-            <div className="mt-2">
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                onChange={(e) =>
-                  setUserFormData({ ...userFormData, email: e.target.value })
-                }
-              />
-            </div>
-          </div>
-
-          <div>
-            <div className="flex items-center justify-between">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Password
-              </label>
-            </div>
-            <div className="mt-2">
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                onChange={(e) =>
-                  setUserFormData({ ...userFormData, password: e.target.value })
-                }
-              />
-            </div>
-          </div>
-
-          <div>
-            <label
-              htmlFor="company"
-              className="block text-sm font-medium leading-6 text-gray-900"
-            >
-              Company
-            </label>
-            <div className="mt-2">
-              <input
-                id="company"
-                name="company"
-                required
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                onChange={(e) =>
-                  setUserFormData({ ...userFormData, company: e.target.value })
-                }
-              />
-            </div>
-          </div>
-
-          <div>
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                console.log(userFormData);
-              }}
-              type="submit"
-              className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              Register
-            </button>
-          </div>
-        </form> */}
       </div>
     </div>
   );
