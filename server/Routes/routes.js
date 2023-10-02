@@ -53,4 +53,19 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.put("/user", async (req, res) => {
+  const { email, solutionsPurchased } = req.body;
+
+  try {
+    await User.findOneAndUpdate(
+      { email },
+      { solutionsPurchased },
+      { new: true }
+    );
+    res.status(200).json({ message: "User was succesfully updated" });
+  } catch (error) {
+    res.status(400).json({ message: "could not update user" });
+  }
+});
+
 module.exports = router;
