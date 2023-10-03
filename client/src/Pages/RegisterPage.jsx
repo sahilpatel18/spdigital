@@ -12,6 +12,22 @@ const RegisterPage = () => {
       .matches(/[a-zA-Z]/, "Password can only contain Latin letters."),
   });
 
+  const registerUser = async (userData) => {
+    const config = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    };
+    const response = await fetch(
+      `${process.env.REACT_APP_BASE_URL}/register`,
+      config
+    );
+    console.log(response);
+    return response;
+  };
+
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -37,7 +53,7 @@ const RegisterPage = () => {
           }}
           validationSchema={RegisterSchema}
           onSubmit={(values) => {
-            console.log(values);
+            registerUser(values);
           }}
         >
           {({ handleChange }) => (
