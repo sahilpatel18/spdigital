@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../Models/userSchema");
 const SALT = process.env.SALT;
+const jwt = require("jsonwebtoken");
 const bycrypt = require("bcrypt");
 
 router.post("/register", async (req, res) => {
@@ -44,7 +45,8 @@ router.post("/login", async (req, res) => {
     const hash = user.password;
     const auth = await bycrypt.compare(password, hash);
     if (auth) {
-      res.status(200).json({ message: "Logged in!" });
+      const token = jwt.sign(email, process.env.TOKEN_SECRET);
+      res.status(200).json({ message: "Logged in! ", token });
     } else {
       res.status(401).json({ message: "Invalid Password" });
     }
