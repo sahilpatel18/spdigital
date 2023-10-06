@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require("../Models/userSchema");
 const SALT = process.env.SALT;
 const jwt = require("jsonwebtoken");
+const validateToken = require("../Middleware/validateToken");
 const bycrypt = require("bcrypt");
 
 router.post("/register", async (req, res) => {
@@ -36,26 +37,36 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
 
-  const query = User.where({ email });
-  const user = await User.findOne(query);
-
-  if (user) {
-    const hash = user.password;
-    const auth = await bycrypt.compare(password, hash);
-    if (auth) {
-      const token = jwt.sign(email, process.env.TOKEN_SECRET);
-      res.status(200).json({ message: "Logged in! ", token });
-    } else {
-      res.status(401).json({ message: "Invalid Password" });
+    if (!user) {
+      return res.status(401).json({ message: "Invalid Email or Password" });
     }
-  } else {
-    res.status(401).json({ message: "Invalid Email or Password" });
+    const auth = await bycrypt.compare(password, user.password);
+
+    if (!auth) {
+      return res.status(401).json({ message: "Invalid Password" });
+    }
+    const id = user.id;
+    const token = jwt.sign({ id, email }, process.env.TOKEN_SECRET);
+    res.json({ token: `Bearer ${token}`, userId: id });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
-router.put("/user", async (req, res) => {
+router.get("/user/:id", validateToken, async (req, res) => {
+  const id = req.params.id;
+
+  // validate the token >> in order for the user to see this
+  const user = await User.findById(id);
+  console.log(user);
+});
+
+router.put("/user", validateToken, async (req, res) => {
   const { email, solutionsPurchased } = req.body;
 
   try {
