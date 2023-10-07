@@ -1,7 +1,14 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 import * as Yup from "yup";
+import { useAuth } from "../context/AuthContext";
+import jwtDecode from "jwt-decode";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+  const { setUser } = useAuth();
+
   const LoginValidation = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Required"),
     password: Yup.string()
@@ -22,8 +29,14 @@ const LoginPage = () => {
       `${process.env.REACT_APP_BASE_URL}/login`,
       config
     );
-    const token = await response.json();
-    console.log(token);
+
+    if (response.ok) {
+      const token = await response.json();
+      Cookies.set("authToken", token);
+      const decoded = jwtDecode(token);
+      setUser(decoded);
+      navigate("/");
+    }
   };
 
   return (
