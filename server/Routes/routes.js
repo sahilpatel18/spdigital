@@ -44,37 +44,38 @@ router.post("/login", async (req, res) => {
     if (!user) {
       return res.status(401).json({ message: "Invalid Email or Password" });
     }
+
     const auth = await bycrypt.compare(password, user.password);
 
     if (!auth) {
       return res.status(401).json({ message: "Invalid Password" });
     }
+
     const id = user.id;
-    const token = jwt.sign({ id, email }, process.env.TOKEN_SECRET);
-    res.json({ token: `Bearer ${token}`, userId: id });
+    const token = jwt.sign({ id, email }, process.env.TOKEN_SECRET, {
+      expiresIn: "4200000",
+    });
+    res.status(200).json(token);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
-router.get("/user/:id", validateToken, async (req, res) => {
+router.get("/user/:id", async (req, res) => {
   const id = req.params.id;
 
-  // validate the token >> in order for the user to see this
   const user = await User.findById(id);
-  console.log(user);
+  res.json(user);
 });
 
-router.put("/user", validateToken, async (req, res) => {
-  const { email, solutionsPurchased } = req.body;
+router.put("/user/:id", async (req, res) => {
+  const id = req.params.id;
+
+  const { email, company } = req.body;
 
   try {
-    await User.findOneAndUpdate(
-      { email },
-      { solutionsPurchased },
-      { new: true }
-    );
+    await User.findByIdAndUpdate(id, { email, company });
     res.status(200).json({ message: "User was succesfully updated" });
   } catch (error) {
     res.status(400).json({ message: "could not update user" });
