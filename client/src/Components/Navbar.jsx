@@ -2,10 +2,13 @@ import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { Dialog, Popover } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import Cookies from "js-cookie";
+import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { user, setUser } = useAuth();
 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   return (
     <header className="bg-white">
       <nav
@@ -70,16 +73,53 @@ const Navbar = () => {
             Contact
           </NavLink>
         </Popover.Group>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <NavLink
-            to="/login"
-            className="text-sm font-semibold leading-6 text-gray-900"
-          >
-            Log in <span aria-hidden="true">&rarr;</span>
-          </NavLink>
-        </div>
+
+        {user ? (
+          <>
+            <div className="mx-9 hidden lg:flex lg:flex-1 lg:justify-end">
+              <NavLink
+                to="/account"
+                className="text-sm font-semibold leading-6 text-gray-900"
+              >
+                {user.email} <span aria-hidden="true"></span>
+              </NavLink>
+            </div>
+            <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+              <NavLink
+                to="/"
+                className="text-sm font-semibold leading-6 text-gray-900 hover:text-red-600 "
+                onClick={() => {
+                  Cookies.remove("authToken");
+                  setUser(null);
+                }}
+              >
+                Logout <span aria-hidden="true"></span>
+              </NavLink>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+              <NavLink
+                to="/login"
+                className="text-sm font-semibold leading-6 text-gray-900"
+              >
+                Log in <span aria-hidden="true"></span>
+              </NavLink>
+            </div>
+            <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+              <NavLink
+                to="/register"
+                className="text-sm font-semibold leading-6 text-gray-900"
+              >
+                Register <span aria-hidden="true">&rarr;</span>
+              </NavLink>
+            </div>
+          </>
+        )}
       </nav>
 
+      {/* Nav for mobile */}
       <Dialog
         as="div"
         className="lg:hidden"
@@ -141,19 +181,62 @@ const Navbar = () => {
                 </NavLink>
                 <NavLink
                   to="/contact"
+                  onClick={() => setMobileMenuOpen(false)}
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Contact
                 </NavLink>
               </div>
-              <div className="py-6">
-                <NavLink
-                  to="/login"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >
-                  Log in
-                </NavLink>
-              </div>
+
+              {user ? (
+                <>
+                  <div className="py-6">
+                    <NavLink
+                      onClick={() => setMobileMenuOpen(false)}
+                      to="/account"
+                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                    >
+                      {user.email}
+                    </NavLink>
+                  </div>
+
+                  <div className="py-6">
+                    <NavLink
+                      to="/"
+                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                      onClick={() => {
+                        Cookies.remove("authToken");
+                        setUser(null);
+                        setMobileMenuOpen(false);
+                      }}
+                    >
+                      Logout
+                    </NavLink>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="py-6">
+                    <NavLink
+                      onClick={() => setMobileMenuOpen(false)}
+                      to="/login"
+                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                    >
+                      Login
+                    </NavLink>
+                  </div>
+
+                  <div className="py-6">
+                    <NavLink
+                      onClick={() => setMobileMenuOpen(false)}
+                      to="/register"
+                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                    >
+                      Register
+                    </NavLink>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </Dialog.Panel>
