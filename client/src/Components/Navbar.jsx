@@ -7,12 +7,14 @@ import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
   const { user, setUser } = useAuth();
-
+  const activeLinkClass =
+    "text-indigo-600 font-semibold leading-6 border-indigo-600 ";
+  const defaultLinkClass = " font-semibold leading-6 text-gray-900 ";
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   return (
     <header className="bg-white">
       <nav
-        className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
+        className="z-20 mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
@@ -38,37 +40,49 @@ const Navbar = () => {
         <Popover.Group className="hidden lg:flex lg:gap-x-12">
           <NavLink
             to="/about"
-            className="text-sm font-semibold leading-6 text-gray-900"
+            className={({ isActive }) =>
+              isActive ? `${activeLinkClass}` : `${defaultLinkClass}`
+            }
           >
             About
           </NavLink>
           <NavLink
             to="/solutions"
-            className="text-sm font-semibold leading-6 text-gray-900"
+            className={({ isActive }) =>
+              isActive ? `${activeLinkClass}` : `${defaultLinkClass}`
+            }
           >
             Solutions
           </NavLink>
           <NavLink
             to="/work"
-            className="text-sm font-semibold leading-6 text-gray-900"
+            className={({ isActive }) =>
+              isActive ? `${activeLinkClass}` : `${defaultLinkClass}`
+            }
           >
             Work
           </NavLink>
           <NavLink
             to="/careers"
-            className="text-sm font-semibold leading-6 text-gray-900"
+            className={({ isActive }) =>
+              isActive ? `${activeLinkClass}` : `${defaultLinkClass}`
+            }
           >
             Careers
           </NavLink>
           <NavLink
             to="/technology"
-            className="text-sm font-semibold leading-6 text-gray-900"
+            className={({ isActive }) =>
+              isActive ? `${activeLinkClass}` : `${defaultLinkClass}`
+            }
           >
             Technology
           </NavLink>
           <NavLink
             to="/contact"
-            className="text-sm font-semibold leading-6 text-gray-900"
+            className={({ isActive }) =>
+              isActive ? `${activeLinkClass}` : `${defaultLinkClass}`
+            }
           >
             Contact
           </NavLink>
@@ -79,7 +93,9 @@ const Navbar = () => {
             <div className="mx-9 hidden lg:flex lg:flex-1 lg:justify-end">
               <NavLink
                 to="/account"
-                className="text-sm font-semibold leading-6 text-gray-900"
+                className={({ isActive }) =>
+                  isActive ? `${activeLinkClass}` : `${defaultLinkClass}`
+                }
               >
                 {user.email} <span aria-hidden="true"></span>
               </NavLink>
@@ -87,7 +103,7 @@ const Navbar = () => {
             <div className="hidden lg:flex lg:flex-1 lg:justify-end">
               <NavLink
                 to="/"
-                className="text-sm font-semibold leading-6 text-gray-900 hover:text-red-600 "
+                className="font-semibold leading-6 text-gray-900 hover:text-red-600 "
                 onClick={() => {
                   Cookies.remove("authToken");
                   setUser(null);
@@ -102,7 +118,9 @@ const Navbar = () => {
             <div className="hidden lg:flex lg:flex-1 lg:justify-end">
               <NavLink
                 to="/login"
-                className="text-sm font-semibold leading-6 text-gray-900"
+                className={({ isActive }) =>
+                  isActive ? `${activeLinkClass}` : `${defaultLinkClass}`
+                }
               >
                 Log in <span aria-hidden="true"></span>
               </NavLink>
@@ -110,7 +128,9 @@ const Navbar = () => {
             <div className="hidden lg:flex lg:flex-1 lg:justify-end">
               <NavLink
                 to="/register"
-                className="text-sm font-semibold leading-6 text-gray-900"
+                className={({ isActive }) =>
+                  isActive ? `${activeLinkClass}` : `${defaultLinkClass}`
+                }
               >
                 Register <span aria-hidden="true">&rarr;</span>
               </NavLink>
