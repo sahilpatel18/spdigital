@@ -1,7 +1,9 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
+  const navigate = useNavigate();
   const RegisterSchema = Yup.object().shape({
     name: Yup.string().required("Required"),
     email: Yup.string().email("Invalid email").required("Required"),
@@ -20,12 +22,8 @@ const RegisterPage = () => {
       },
       body: JSON.stringify(userData),
     };
-    const response = await fetch(
-      `${process.env.REACT_APP_BASE_URL}/register`,
-      config
-    );
-    console.log(response);
-    return response;
+    await fetch(`${process.env.REACT_APP_BASE_URL}/register`, config);
+    navigate("/login");
   };
 
   return (
