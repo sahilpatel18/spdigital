@@ -1,20 +1,14 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import * as Yup from "yup";
+import { loginPageValidationSchema } from "../validation/loginPageValidationSchema";
 import { useAuth } from "../context/AuthContext";
 import jwtDecode from "jwt-decode";
+import ToastSuccess from "../Components/ToastSuccess";
 
-const LoginPage = () => {
+const LoginPage = ({ displayToast }) => {
   const navigate = useNavigate();
   const { setUser } = useAuth();
-
-  const LoginValidation = Yup.object().shape({
-    email: Yup.string().email("Invalid email").required("Required"),
-    password: Yup.string()
-      .required("No password provided.")
-      .matches(/[a-zA-Z]/, "Password can only contain Latin letters."),
-  });
 
   const loginUser = async (userData) => {
     const config = {
@@ -32,8 +26,10 @@ const LoginPage = () => {
 
     if (response.ok) {
       const token = await response.json();
-      Cookies.set("authToken", token);
+
+      Cookies.set("authToken", token, { expires: 1 / 24 });
       const decoded = jwtDecode(token);
+
       setUser(decoded);
       navigate("/");
     }
@@ -59,12 +55,12 @@ const LoginPage = () => {
               email: "",
               password: "",
             }}
-            validationSchema={LoginValidation}
+            validationSchema={loginPageValidationSchema}
             onSubmit={(values) => {
               loginUser(values);
             }}
           >
-            {({ handleChange }) => (
+            {(formik) => (
               <Form className="space-y-6">
                 <div>
                   <label
@@ -79,7 +75,6 @@ const LoginPage = () => {
                       name="email"
                       type="email"
                       autoComplete="email"
-                      onChange={handleChange}
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                     <ErrorMessage
@@ -104,7 +99,6 @@ const LoginPage = () => {
                       name="password"
                       type="password"
                       autoComplete="current-password"
-                      onChange={handleChange}
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                     <ErrorMessage
