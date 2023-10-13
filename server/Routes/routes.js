@@ -3,8 +3,9 @@ const router = express.Router();
 const User = require("../Models/userSchema");
 const SALT = process.env.SALT;
 const jwt = require("jsonwebtoken");
-const validateToken = require("../Middleware/validateToken");
 const bycrypt = require("bcrypt");
+const sgMail = require("@sendgrid/mail");
+const sgTemplate = require("../Utils/sgTemplate");
 
 router.post("/register", async (req, res) => {
   const { name, email, password, company, solutionsPurchased } = req.body;
@@ -79,6 +80,21 @@ router.put("/user/:id", async (req, res) => {
     res.status(200).json({ message: "User was succesfully updated" });
   } catch (error) {
     res.status(400).json({ message: "could not update user" });
+  }
+});
+
+//email handling
+sgMail.setApiKey(process.env.CONTACT_API_KEY);
+router.post("/send-mail", async (req, res) => {
+  const { name, company, email, phone, message } = req.body;
+  const msg = sgTemplate(name, company, email, phone, message);
+  try {
+    await sgMail.send(msg);
+    res.status(200).json({ message: "Email sent successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to send email", error: error.message });
   }
 });
 
