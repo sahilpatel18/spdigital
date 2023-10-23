@@ -1,10 +1,10 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import { loginPageValidationSchema } from "../validation/loginPageValidationSchema";
 import { useAuth } from "../context/AuthContext";
 import jwtDecode from "jwt-decode";
-import ToastSuccess from "../Components/ToastSuccess";
 
 const LoginPage = ({ displayToast }) => {
   const navigate = useNavigate();
@@ -29,9 +29,18 @@ const LoginPage = ({ displayToast }) => {
 
       Cookies.set("authToken", token, { expires: 1 / 24 });
       const decoded = jwtDecode(token);
-
       setUser(decoded);
       navigate("/");
+      toast.success("Login Successful!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
