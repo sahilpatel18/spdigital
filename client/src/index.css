@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.Toastify__toast--success {
+    background-color: #e6ebf8 !important;  /* Light indigo background */
+    color: #4f46e5 !important;  /* Dark indigo text */
+  }
+
+/* Success Toast */
+.Toastify__progress-bar {
+    background: #4f46e5 !important;  /* Indigo for success */
+  }
+
+  /* Change the color of icons inside the toast */
+.Toastify__toast-icon {
+    color: #4f46e5 !important;  /* Use your desired indigo color */
+  }
+  
