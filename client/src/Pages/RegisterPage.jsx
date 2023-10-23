@@ -1,33 +1,33 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
+import { registerValidationSchema } from "../validation/registerValidationSchema";
 import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
-  const RegisterSchema = Yup.object().shape({
-    name: Yup.string().required("Required"),
-    email: Yup.string().email("Invalid email").required("Required"),
-    company: Yup.string().required("Required"),
-    password: Yup.string()
-      .required("No password provided.")
-      .min(6, "Password is too short - should be 6 chars minimum.")
-      .matches(/[a-zA-Z]/, "Password can only contain Latin letters."),
-  });
 
   const registerUser = async (userData) => {
-    const config = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userData),
-    };
-    await fetch(`${process.env.REACT_APP_BASE_URL}/register`, config);
-    navigate("/login");
+    try {
+      const config = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      };
+      const response = await fetch(
+        `${process.env.REACT_APP_BASE_URL}/register`,
+        config
+      );
+      if (response.ok) {
+        navigate("/login");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
-    <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+    <div className="bg-white min-h-screen px-6 py-24 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <img
           className="mx-auto h-10 w-auto"
@@ -38,7 +38,6 @@ const RegisterPage = () => {
           Register Your Account
         </h2>
       </div>
-
       {/* registration form */}
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <Formik
@@ -49,7 +48,7 @@ const RegisterPage = () => {
             company: "",
             solutionsPurchased: [],
           }}
-          validationSchema={RegisterSchema}
+          validationSchema={registerValidationSchema}
           onSubmit={(values) => {
             registerUser(values);
           }}
