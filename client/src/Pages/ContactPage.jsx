@@ -1,9 +1,16 @@
+import { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { ToastContainer, toast } from "react-toastify";
 import { contactFormValidationSchema } from "../validation/contactFormValidationSchema";
+import Loader from "../Components/Loader";
+import "react-toastify/dist/ReactToastify.css";
 
 const ContactPage = () => {
-  const submitContactForm = async (userData) => {
+  const [loading, setLoading] = useState(false);
+
+  const submitContactForm = async (userData, resetForm) => {
     try {
+      setLoading(true);
       const config = {
         method: "POST",
         headers: {
@@ -16,14 +23,41 @@ const ContactPage = () => {
         config
       );
 
-      console.log(response);
+      if (response.ok) {
+        resetForm();
+        toast.success("Successfully Submitted", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      {loading && <Loader />}
       <div
         className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem] pointer-events-none"
         aria-hidden="true"
@@ -54,8 +88,8 @@ const ContactPage = () => {
           message: "",
         }}
         validationSchema={contactFormValidationSchema}
-        onSubmit={(values) => {
-          submitContactForm(values);
+        onSubmit={(values, { resetForm }) => {
+          submitContactForm(values, resetForm);
         }}
       >
         {(formik) => (
