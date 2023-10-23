@@ -2,6 +2,7 @@ import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { Dialog, Popover } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import { useAuth } from "../context/AuthContext";
 
@@ -10,6 +11,7 @@ const Navbar = () => {
   const activeLinkClass =
     "text-indigo-600 font-semibold leading-6 border-indigo-600 ";
   const defaultLinkClass = " font-semibold leading-6 text-gray-900 ";
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   return (
     <header className="bg-white">
@@ -107,6 +109,16 @@ const Navbar = () => {
                 onClick={() => {
                   Cookies.remove("authToken");
                   setUser(null);
+                  toast.success("Successfully Logged Out", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                  });
                 }}
               >
                 Logout <span aria-hidden="true"></span>
@@ -228,6 +240,16 @@ const Navbar = () => {
                         Cookies.remove("authToken");
                         setUser(null);
                         setMobileMenuOpen(false);
+                        toast.success("Successfully Logged Out", {
+                          position: "top-right",
+                          autoClose: 5000,
+                          hideProgressBar: false,
+                          closeOnClick: true,
+                          pauseOnHover: true,
+                          draggable: true,
+                          progress: undefined,
+                          theme: "light",
+                        });
                       }}
                     >
                       Logout
