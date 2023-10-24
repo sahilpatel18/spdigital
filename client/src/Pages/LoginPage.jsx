@@ -6,7 +6,7 @@ import { loginPageValidationSchema } from "../validation/loginPageValidationSche
 import { useAuth } from "../context/AuthContext";
 import jwtDecode from "jwt-decode";
 
-const LoginPage = ({ displayToast }) => {
+const LoginPage = () => {
   const navigate = useNavigate();
   const { setUser } = useAuth();
 
