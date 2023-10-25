@@ -1,8 +1,9 @@
 import { PencilIcon } from "@heroicons/react/24/outline";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-
+import { useAuth } from "../context/AuthContext";
 const Modal = ({ isOpen, toggleModal, user }) => {
+  const { setUser } = useAuth();
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Required"),
     company: Yup.string().required("Required"),
@@ -22,6 +23,7 @@ const Modal = ({ isOpen, toggleModal, user }) => {
     );
     if (response.ok) {
       toggleModal();
+      setUser((currData) => ({ ...currData, email: userData.email }));
     }
   };
 
