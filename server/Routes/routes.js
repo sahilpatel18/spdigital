@@ -3,9 +3,10 @@ const router = express.Router();
 const User = require("../Models/userSchema");
 const SALT = process.env.SALT;
 const jwt = require("jsonwebtoken");
-const bycrypt = require("bcrypt");
+const bcrypt = require("bcrypt");
 const sgMail = require("@sendgrid/mail");
 const sgTemplate = require("../Utils/sgTemplate");
+const Solution = require("../Models/solutionSchema");
 
 router.post("/register", async (req, res) => {
   const { name, email, password, company, solutionsPurchased } = req.body;
@@ -14,7 +15,7 @@ router.post("/register", async (req, res) => {
   const user = await User.findOne(query);
 
   if (!user) {
-    const hashedPass = await bycrypt.hash(password, parseInt(SALT));
+    const hashedPass = await bcrypt.hash(password, parseInt(SALT));
 
     const newUser = new User({
       name,
@@ -46,7 +47,7 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ message: "Invalid Email or Password" });
     }
 
-    const auth = await bycrypt.compare(password, user.password);
+    const auth = await bcrypt.compare(password, user.password);
 
     if (!auth) {
       return res.status(401).json({ message: "Invalid Password" });
@@ -65,14 +66,12 @@ router.post("/login", async (req, res) => {
 
 router.get("/user/:id", async (req, res) => {
   const id = req.params.id;
-
   const user = await User.findById(id);
   res.json(user);
 });
 
 router.put("/user/:id", async (req, res) => {
   const id = req.params.id;
-
   const { email, company } = req.body;
 
   try {
@@ -83,7 +82,6 @@ router.put("/user/:id", async (req, res) => {
   }
 });
 
-//email handling
 sgMail.setApiKey(process.env.CONTACT_API_KEY);
 router.post("/send-mail", async (req, res) => {
   const { name, company, email, phone, message } = req.body;
@@ -97,5 +95,21 @@ router.post("/send-mail", async (req, res) => {
       .json({ message: "Failed to send email", error: error.message });
   }
 });
+
+router.post("/solutions", async (req, res) => {
+  const { title, price, description } = req.body;
+  try {
+    const newSolution = new Solution({ title, price, description });
+    await newSolution.save();
+
+    res.status(201).json({ message: "Successfully Added" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
+
+
 
 module.exports = router;
