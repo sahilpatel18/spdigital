@@ -117,4 +117,14 @@ router.get("/solutions", async (req, res) => {
   }
 });
 
+router.get("/solutions/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    const data = await Solution.findById(id);
+    res.json({ data });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
 module.exports = router;
