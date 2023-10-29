@@ -1,14 +1,36 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import GradientBackground from "./GradientBackground";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import reviews from "../data/reviews";
 import carouselSettings from "../config/carouselSettings";
+import { useAuth } from "../context/AuthContext";
 
+const SolutionDetailsPage = () => {
+  const { user } = useAuth();
+  const [solution, setSolution] = useState([]);
+  const { id } = useParams();
 
-const SolutionDetailsPage = ({ title, price, description }) => {
+  useEffect(() => {
+    const fetchSolution = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_BASE_URL}/solutions/${id}`
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setSolution(data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchSolution();
+  }, [id]);
+
   return (
     <div className="bg-white min-h-screen p-8 relative">
       <div className="absolute inset-0 z-0">
@@ -26,18 +48,29 @@ const SolutionDetailsPage = ({ title, price, description }) => {
             </Link>
             <div className="mt-4">
               <h1 className="text-3xl font-bold text-gray-800 break-words">
-                SEO OPTIMIZATION{title}
+                {solution.title}
               </h1>
-              <p className="text-xl text-gray-500 mt-2">Price: $300{price}</p>
-              <p className="mt-4 text-gray-600 whitespace-pre-line">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto
-                ad dignissimos reiciendis ipsam ex deleniti nemo, possimus culpa
-                doloremque consequatur explicabo exercitationem magni quam
-                soluta vero repellat provident molestias qui.{description}
+              <p className="text-xl text-gray-500 mt-2">
+                Price: ${solution.price}
               </p>
-              <button className="w-full bg-indigo-600 text-white mt-6 py-2 rounded-md hover:bg-indigo-500 transition-colors">
-                Purchase Now
-              </button>
+              <p className="mt-4 text-gray-600 whitespace-pre-line">
+                {solution.description}
+              </p>
+              {user ? (
+                <>
+                  <button className="w-full bg-indigo-600 text-white mt-6 py-2 rounded-md hover:bg-indigo-500 transition-colors">
+                    Purchase Now
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link to="/login">
+                    <button className="w-full bg-indigo-600 text-white mt-6 py-2 rounded-md hover:bg-indigo-500 transition-colors">
+                      Login To Purchase
+                    </button>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
