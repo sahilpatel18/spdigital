@@ -13,16 +13,20 @@ const AccountsPage = () => {
 
   useEffect(() => {
     const fetchAccount = async () => {
-      if (user && user.id) {
-        const response = await fetch(
-          `${process.env.REACT_APP_BASE_URL}/user/${user.id}`
-        );
+      try {
+        if (user && user.id) {
+          const response = await fetch(
+            `${process.env.REACT_APP_BASE_URL}/user/${user.id}`
+          );
 
-        const data = await response.json();
-        setAccount(data);
-        setLoading(false);
-      } else {
-        setLoading(true);
+          const data = await response.json();
+          setAccount(data);
+          setLoading(false);
+        } else {
+          setLoading(true);
+        }
+      } catch (error) {
+        console.error(error);
       }
     };
     fetchAccount();
