@@ -5,6 +5,7 @@ import Cookies from "js-cookie";
 import { loginPageValidationSchema } from "../validation/loginPageValidationSchema";
 import { useAuth } from "../context/AuthContext";
 import jwtDecode from "jwt-decode";
+import GradientBackground from "./GradientBackground";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -46,6 +47,7 @@ const LoginPage = () => {
 
   return (
     <div className="bg-white min-h-screen px-6 py-24 lg:px-8">
+      <GradientBackground />
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <img
           className="mx-auto h-10 w-auto"
