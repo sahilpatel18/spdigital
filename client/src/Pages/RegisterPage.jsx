@@ -1,6 +1,7 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { registerValidationSchema } from "../validation/registerValidationSchema";
 import { useNavigate } from "react-router-dom";
+import GradientBackground from "./GradientBackground";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ const RegisterPage = () => {
 
   return (
     <div className="bg-white min-h-screen px-6 py-24 lg:px-8">
+      <GradientBackground />
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <img
           className="mx-auto h-10 w-auto"
