@@ -58,9 +58,11 @@ const SolutionDetailsPage = () => {
               </p>
               {user ? (
                 <>
-                  <button className="w-full bg-indigo-600 text-white mt-6 py-2 rounded-md hover:bg-indigo-500 transition-colors">
-                    Purchase Now
-                  </button>
+                  <Link to={`/checkout/${id}`}>
+                    <button className="w-full bg-indigo-600 text-white mt-6 py-2 rounded-md hover:bg-indigo-500 transition-colors">
+                      Purchase Now
+                    </button>
+                  </Link>
                 </>
               ) : (
                 <>
