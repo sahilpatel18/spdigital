@@ -7,6 +7,9 @@ import "slick-carousel/slick/slick-theme.css";
 import reviews from "../data/reviews";
 import carouselSettings from "../config/carouselSettings";
 import { useAuth } from "../context/AuthContext";
+import { loadStripe } from "@stripe/stripe-js";
+
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK);
 
 const SolutionDetailsPage = () => {
   const { user } = useAuth();
@@ -30,6 +33,27 @@ const SolutionDetailsPage = () => {
 
     fetchSolution();
   }, [id]);
+
+  const handleClick = async () => {
+    const stripe = await stripePromise;
+    const response = await fetch(
+      `${process.env.REACT_APP_BASE_URL}/create-checkout-session`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ solutionId: id }),
+      }
+    );
+    const session = await response.json();
+    const result = await stripe.redirectToCheckout({
+      sessionId: session.id,
+    });
+    if (result.error) {
+      console.error(result.error.message);
+    }
+  };
 
   return (
     <div className="bg-white min-h-screen p-8 relative">
@@ -58,11 +82,12 @@ const SolutionDetailsPage = () => {
               </p>
               {user ? (
                 <>
-                  <Link to={`/checkout/${id}`}>
-                    <button className="w-full bg-indigo-600 text-white mt-6 py-2 rounded-md hover:bg-indigo-500 transition-colors">
-                      Purchase Now
-                    </button>
-                  </Link>
+                  <button
+                    onClick={handleClick}
+                    className="w-full bg-indigo-600 text-white mt-6 py-2 rounded-md hover:bg-indigo-500 transition-colors"
+                  >
+                    Purchase Now
+                  </button>
                 </>
               ) : (
                 <>
