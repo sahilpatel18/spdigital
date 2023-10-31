@@ -10,7 +10,8 @@ const Navbar = () => {
   const { user, setUser } = useAuth();
   const activeLinkClass =
     "text-indigo-600 font-semibold leading-6 border-indigo-600 ";
-  const defaultLinkClass = " font-semibold leading-6 text-gray-900 ";
+  const defaultLinkClass =
+    " font-semibold leading-6 hover:text-indigo-500 text-gray-900 ";
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   return (
