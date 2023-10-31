@@ -1,0 +1,5 @@
+.form-container {
+    position: relative;
+    z-index: 10; /* You can adjust the value accordingly */
+  }
+  
