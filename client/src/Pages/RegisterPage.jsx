@@ -1,7 +1,7 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { registerValidationSchema } from "../validation/registerValidationSchema";
 import { useNavigate } from "react-router-dom";
-import GradientBackground from "./GradientBackground";
+import GradientBackground from "../Styles/GradientBackground";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -36,12 +36,12 @@ const RegisterPage = () => {
           src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
           alt="Your Company"
         />
-        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+        <h2 className="mt-6 text-3xl font-bold leading-9 text-center tracking-tight text-gray-900">
           Register Your Account
         </h2>
       </div>
       {/* registration form */}
-      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+      <div className="mx-auto mt-8 max-w-md bg-white p-6 pb-10 rounded-lg shadow-2xl transition-transform hover:-translate-y-1 hover:scale-105 form-container">
         <Formik
           initialValues={{
             name: "",
