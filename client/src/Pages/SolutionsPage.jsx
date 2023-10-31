@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import SolutionCard from "../Components/SolutionCard";
-import GradientBackground from "./GradientBackground";
+import GradientBackground from "../Styles/GradientBackground";
 
 const SolutionsPage = () => {
   const [solutions, setSolutions] = useState([]);
