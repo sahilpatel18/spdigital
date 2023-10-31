@@ -7,6 +7,7 @@ const bcrypt = require("bcrypt");
 const sgMail = require("@sendgrid/mail");
 const sgTemplate = require("../Utils/sgTemplate");
 const Solution = require("../Models/solutionSchema");
+const stripe = require("stripe")(process.env.STRIPE_SK);
 
 router.post("/register", async (req, res) => {
   const { name, email, password, company, solutionsPurchased } = req.body;
@@ -111,7 +112,7 @@ router.post("/solutions", async (req, res) => {
 router.get("/solutions", async (req, res) => {
   try {
     const data = await Solution.find({});
-    res.json({ data });
+    res.json(data);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -121,10 +122,44 @@ router.get("/solutions/:id", async (req, res) => {
   const id = req.params.id;
   try {
     const data = await Solution.findById(id);
-    res.json({ data });
+    res.json(data);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
+});
+
+router.post("/create-checkout-session", async (req, res) => {
+  const { solutionId } = req.body;
+
+  const solution = await Solution.findById(solutionId);
+
+  if (!solution) {
+    return res.status(404).send("Solution not found");
+  }
+
+  const priceInCents = Math.round(solution.price * 100);
+
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ["card"],
+    line_items: [
+      {
+        price_data: {
+          currency: "usd",
+          product_data: {
+            name: solution.title,
+            description: solution.description,
+          },
+          unit_amount: priceInCents,
+        },
+        quantity: 1,
+      },
+    ],
+    mode: "payment",
+    success_url: `${process.env.DEV_FRONT_URL}/success`,
+    cancel_url: `${process.env.DEV_FRONT_URL}/solutions/${solutionId}`,
+  });
+
+  res.json({ id: session.id });
 });
 
 module.exports = router;
