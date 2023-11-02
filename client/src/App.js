@@ -8,7 +8,12 @@ import TechnologyPage from "./Pages/TechnologyPage";
 import Navbar from "./Components/Navbar";
 import WorkPage from "./Pages/WorkPage";
 import CareersPage from "./Pages/CareersPage";
+import AccountsPage from "./Pages/AccountsPage";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import SolutionDetailPage from "./Pages/SolutionDetailPage";
+import CheckoutPage from "./Pages/CheckoutPage";
+import SuccessPage from "./Pages/SuccessPage";
+import ErrorPage from "./Pages/ErrorPage";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -36,6 +41,14 @@ const App = () => {
           element: <SolutionsPage />,
         },
         {
+          path: "/solutions/:id",
+          element: <SolutionDetailPage />,
+        },
+        {
+          path: "/checkout/:id",
+          element: <CheckoutPage />,
+        },
+        {
           path: "/technology",
           element: <TechnologyPage />,
         },
@@ -44,12 +57,24 @@ const App = () => {
           element: <ContactPage />,
         },
         {
+          path: "/success",
+          element: <SuccessPage />,
+        },
+        {
+          path: "/error",
+          element: <ErrorPage />,
+        },
+        {
           path: "/work",
           element: <WorkPage />,
         },
         {
           path: "/careers",
           element: <CareersPage />,
+        },
+        {
+          path: "/account",
+          element: <AccountsPage />,
         },
       ],
     },
