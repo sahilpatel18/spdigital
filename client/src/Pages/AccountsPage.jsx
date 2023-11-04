@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 import Modal from "../Components/Modal";
 import Loader from "../Components/Loader";
+import GradientBackground from "../Styles/GradientBackground";
 
 const AccountsPage = () => {
   const { user } = useAuth();
@@ -40,6 +41,7 @@ const AccountsPage = () => {
     <Loader />
   ) : (
     <div className="bg-white min-h-screen px-6 py-24 lg:px-8">
+      <GradientBackground />
       <div className="max-w-screen-lg mx-auto">
         <header className="flex justify-between items-center mb-8">
           <div>
