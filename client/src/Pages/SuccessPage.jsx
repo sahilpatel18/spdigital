@@ -4,12 +4,10 @@ import "../Styles/SuccessPageStyles.css";
 import GradientBackground from "../Styles/GradientBackground";
 
 const SuccessPage = () => {
-  document.body.classList.add("no-scroll");
-
   return (
     <div className="min-h-screen flex items-center justify-center text-center px-4 bg-white overflow-y-hidden">
       <GradientBackground />
-      <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg z-10 relative">
+      <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg z-10 relative transition-transform hover:-translate-y-1 hover:scale-105">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-24 w-24 text-green-500 mx-auto mb-4"
