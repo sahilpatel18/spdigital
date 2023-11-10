@@ -27,7 +27,7 @@ const SolutionsPage = () => {
   return (
     <div className="bg-white min-h-screen p-8">
       <GradientBackground />
-      <h1 className="text-3xl font-bold text-indigo-500 mb-6">Our Solutions</h1>
+      <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Our Solutions</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {solutions.map((solution) => (
           <SolutionCard
