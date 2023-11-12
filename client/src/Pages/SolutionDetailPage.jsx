@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import GradientBackground from "./GradientBackground";
+import GradientBackground from "../Styles/GradientBackground";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import reviews from "../data/reviews";
 import carouselSettings from "../config/carouselSettings";
 import { useAuth } from "../context/AuthContext";
+import "../Styles/ContactPageStyles.css";
 import { loadStripe } from "@stripe/stripe-js";
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK);
