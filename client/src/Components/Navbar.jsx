@@ -184,30 +184,35 @@ const Navbar = () => {
               <div className="space-y-2 py-6">
                 <NavLink
                   to="/about"
+                  onClick={() => setMobileMenuOpen(false)}
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   About
                 </NavLink>
                 <NavLink
                   to="/solutions"
+                  onClick={() => setMobileMenuOpen(false)}
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Solutions
                 </NavLink>
                 <NavLink
                   to="/work"
+                  onClick={() => setMobileMenuOpen(false)}
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Work
                 </NavLink>
                 <NavLink
                   to="/careers"
+                  onClick={() => setMobileMenuOpen(false)}
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Careers
                 </NavLink>
                 <NavLink
                   to="/technology"
+                  onClick={() => setMobileMenuOpen(false)}
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Technology
