@@ -2,17 +2,26 @@ import React, { useState, useEffect } from "react";
 import GradientBackground from "../Styles/GradientBackground"; // Assuming similar styling as SolutionDetailsPage
 import JobListCard from "../Components/JobListCard";
 
-const dummyJobListings = [
-  { id: 1, title: "Frontend Developer", experience: "Junior" },
-  { id: 2, title: "Backend Developer", experience: "Mid-level" },
-  { id: 3, title: "Full Stack Developer", experience: "Senior" },
-];
+
 
 const CareersPage = () => {
   const [jobListings, setJobListings] = useState([]);
 
   useEffect(() => {
-    setJobListings(dummyJobListings);
+    const fetchListings = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_BASE_URL}/job-listing`
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setJobListings(data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchListings();
   }, []);
 
   return (
@@ -30,9 +39,10 @@ const CareersPage = () => {
           {jobListings.map((job) => {
             return (
               <JobListCard
-                id={job.id}
+                id={job._id}
                 title={job.title}
                 experience={job.experience}
+                key={job._id}
               />
             );
           })}
